@@ -4,3 +4,6 @@ version = "0.1.0"
 authors = ["KennethZhang <zjhken01@163.com>"]
 
 [dependencies]
+log = "0.4.4"
+simple_logger = "0.5"
+mio = "0.6"

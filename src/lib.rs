@@ -1,7 +1,10 @@
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
-}
+#[macro_use]
+extern crate log;
+extern crate simple_logger;
+extern crate mio;
+
+
+pub mod router;
+pub mod server;
+
+
