@@ -1,0 +1,6 @@
+[package]
+name = "WebLib4Rust"
+version = "0.1.0"
+authors = ["KennethZhang <zjhken01@163.com>"]
+
+[dependencies]
