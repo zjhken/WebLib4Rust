@@ -3,12 +3,13 @@
 
 use mio::*;
 use mio::tcp::{TcpListener, TcpStream};
-use std::io::{Read,Write};
+//use std::io::{Read,Write};
 
 use simple_logger;
 use std::net::SocketAddr;
 
 use log::Level;
+use router::Router;
 
 pub struct HtmlServer{
 	SERVER_ID:Token,
@@ -29,6 +30,16 @@ impl HtmlServer{
 			SERVER_ID: Token(1),
 			localAddr: "1.0.0.1:9090".parse().unwrap(),
 		}
+	}
+
+	pub fn listenAddress(self) -> HtmlServer{
+		return self;
+	}
+	pub fn port(self) -> HtmlServer{
+		return self;
+	}
+	pub fn router(self, router: Router) -> HtmlServer{
+		return self;
 	}
 }
 

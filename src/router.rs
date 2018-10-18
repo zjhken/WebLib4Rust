@@ -12,15 +12,16 @@ pub fn createRouter<'a>() -> Router<'a> {
 }
 
 use std::borrow::Cow;
+use core::borrow::BorrowMut;
 
 impl<'a> Router<'a> {
-	pub fn anyMethod(&mut self, ctxPath: Cow<str>) -> &'a mut Route<'a> {
+	pub fn anyMethod(&'a mut self, ctxPath: Cow<'a, str>) -> &'a mut Route<'a> {
 		let mut r = Route {
-			path: Cow::Borrowed("haha"),
+			path: ctxPath,
 			interceptors: Vec::new(),
 		};
 		self.routeList.push(r);
-		return &r;
+		return self.routeList.last_mut().unwrap();
 	}
 }
 
@@ -32,9 +33,6 @@ pub struct Route<'a> {
 impl<'a> Route<'a> {
 	pub fn interceptor(&mut self, middleHandler: fn(RouteContext) -> RouteContext) -> () {
 		self.interceptors.push(middleHandler);
-		//if let Some(ref mut interceptors) = self.interceptors{
-		//	interceptors.push()
-		//}
 	}
 }
 

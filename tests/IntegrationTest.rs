@@ -31,6 +31,14 @@ fn itWork() {
 	server::run();
 }
 
-fn validateUser(cxt: RouteContext) -> RouteContext {}
+fn validateUser(cxt: RouteContext) -> RouteContext {
+	return RouteContext{
 
-fn login(cxt: RouteContext) {}
+	}
+}
+
+fn login(cxt: RouteContext) -> RouteContext {
+	return RouteContext{
+
+	}
+}
