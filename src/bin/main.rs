@@ -1,18 +1,8 @@
-#![allow(non_snake_case)]
-#![feature(nll)]
-
 extern crate WebLib4Rust;
 
-use WebLib4Rust::router;
-use WebLib4Rust::server;
-
-use std::borrow::Cow;
-use WebLib4Rust::router::RouteContext;
-
-#[test]
-fn itWork() {
-
+fn main() {
 	let mut router = router::createRouter();
+
 	router
 		.anyMethod(Cow::Borrowed("api"))
 		.interceptor(validateUser);
@@ -30,7 +20,3 @@ fn itWork() {
 
 	server::run();
 }
-
-fn validateUser(cxt: RouteContext) -> RouteContext {}
-
-fn login(cxt: RouteContext) {}

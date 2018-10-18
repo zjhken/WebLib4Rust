@@ -16,6 +16,13 @@ pub struct HtmlServer{
 
 }
 
+pub fn createHtmlServer() -> HtmlServer{
+	return HtmlServer{
+		SERVER_ID: Token(8usize),
+		localAddr: "52.78.196.238:8888".parse().unwrap(),
+	}
+}
+
 impl HtmlServer{
 	pub fn new() -> HtmlServer {
 		return HtmlServer{
