@@ -6,10 +6,11 @@ use core::borrow::BorrowMut;
 use std::collections::HashMap;
 
 
+
 type Handler = fn(Context);
 
 pub struct Router<'a> {
-	routes: Vec<Route<'a>>,
+	pub routes: Vec<Route<'a>>,
 }
 
 pub fn new<'a>() -> Router<'a> {

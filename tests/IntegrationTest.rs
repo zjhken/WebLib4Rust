@@ -19,12 +19,12 @@ fn itWork() {
 	router.post(Cow::Borrowed("api/haha")).handler(validateUser);
 
 
-//	let server = asyncio::createHtmlServer()
-//		.listenAddress()
-//		.port()
-//		.router(router);
-//
-//	asyncio::run();
+	let server = WebLib4Rust::newHttpServer()
+		.listenPort("9999")
+		.setRouter(router);
+
+	server.run();
+
 }
 
 fn validateUser(cxt: Context) {
