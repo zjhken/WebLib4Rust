@@ -107,7 +107,7 @@ mod tests {
 
 	#[test]
 	fn haha(){
-		use server;
-		server::run();
+		use asyncio;
+		asyncio::run();
 	}
 }

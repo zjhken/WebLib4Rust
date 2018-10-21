@@ -4,41 +4,31 @@
 extern crate WebLib4Rust;
 
 use WebLib4Rust::router;
-use WebLib4Rust::server;
+use WebLib4Rust::asyncio;
 
 use std::borrow::Cow;
-use WebLib4Rust::router::RouteContext;
+use WebLib4Rust::router::Context;
+use WebLib4Rust::router::HttpMethod;
 
 #[test]
 fn itWork() {
 
-	let mut router = router::createRouter();
-	router
-		.anyMethod(Cow::Borrowed("api"))
-		.interceptor(validateUser);
-	router
-		.anyMethod(Cow::Borrowed("*"))
-		.interceptor(validateUser);
-	router
-		.anyMethod(Cow::Borrowed("login"))
-		.interceptor(validateUser);
+	let mut router = router::new();
 
-	let server = server::createHtmlServer()
-		.listenAddress()
-		.port()
-		.router(router);
+	router.route(Cow::Borrowed("api")).handler(validateUser);
+	router.post(Cow::Borrowed("api/haha")).handler(validateUser);
 
-	server::run();
+
+//	let server = asyncio::createHtmlServer()
+//		.listenAddress()
+//		.port()
+//		.router(router);
+//
+//	asyncio::run();
 }
 
-fn validateUser(cxt: RouteContext) -> RouteContext {
-	return RouteContext{
+fn validateUser(cxt: Context) {
+	println!("handling context");
 
-	}
 }
 
-fn login(cxt: RouteContext) -> RouteContext {
-	return RouteContext{
-
-	}
-}

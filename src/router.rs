@@ -1,41 +1,81 @@
 #![allow(non_snake_case)]
 #![feature(nll)]
 
+use std::borrow::Cow;
+use core::borrow::BorrowMut;
+use std::collections::HashMap;
+
+
+type Handler = fn(Context);
+
 pub struct Router<'a> {
-	routeList: Vec<Route<'a>>,
+	routes: Vec<Route<'a>>,
 }
 
-pub fn createRouter<'a>() -> Router<'a> {
+pub fn new<'a>() -> Router<'a> {
 	return Router {
-		routeList: Vec::new(),
+		routes: Vec::new(),
 	};
 }
 
-use std::borrow::Cow;
-use core::borrow::BorrowMut;
+
 
 impl<'a> Router<'a> {
-	pub fn anyMethod(&'a mut self, ctxPath: Cow<'a, str>) -> &'a mut Route<'a> {
-		let mut r = Route {
-			path: ctxPath,
-			interceptors: Vec::new(),
+	pub fn post(&mut self, path:Cow<'a, str>) -> &mut Route<'a> {
+		let route = Route{
+			path,
+			method: HttpMethod::POST,
+			handlers: Vec::new(),
 		};
-		self.routeList.push(r);
-		return self.routeList.last_mut().unwrap();
+		self.routes.push(route);
+		let r = self.routes.last_mut().unwrap();
+		return r;
+	}
+	pub fn get(&mut self, path:Cow<'a, str>) -> &mut Route<'a> {
+		let route = Route{
+			path,
+			method: HttpMethod::GET,
+			handlers: Vec::new(),
+		};
+		self.routes.push(route);
+		let r = self.routes.last_mut().unwrap();
+		return r;
+	}
+	pub fn route(&mut self, path:Cow<'a, str>) -> &mut Route<'a> {
+		let route = Route{
+			path,
+			method: HttpMethod::ANY,
+			handlers: Vec::new(),
+		};
+		self.routes.push(route);
+		let r = self.routes.last_mut().unwrap();
+		return r;
 	}
 }
 
-pub struct Route<'a> {
-	path: Cow<'a, str>,
-	interceptors: Vec<fn(RouteContext) -> RouteContext>,
-}
-
-impl<'a> Route<'a> {
-	pub fn interceptor(&mut self, middleHandler: fn(RouteContext) -> RouteContext) -> () {
-		self.interceptors.push(middleHandler);
-	}
-}
-
-pub struct RouteContext {}
+pub struct Context {}
 
 pub struct RespCtx {}
+
+pub enum HttpMethod {
+	GET,
+	POST,
+	ANY,
+}
+
+pub struct Route<'a>{
+	path: Cow<'a, str>,
+	method: HttpMethod,
+	handlers: Vec<Handler>
+}
+
+impl<'a> Route<'a>{
+	pub fn method(&mut self, method: HttpMethod) -> &mut Route<'a>{
+		self.method = method;
+		return self;
+	}
+	pub fn handler(&mut self, handler: Handler) -> &mut Route<'a>{
+		self.handlers.push(handler);
+		return self;
+	}
+}
