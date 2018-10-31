@@ -12,7 +12,6 @@ use WebLib4Rust::router::HttpMethod;
 
 #[test]
 fn itWork() {
-
 	let mut router = router::new();
 
 	router.route(Cow::Borrowed("api")).handler(validateUser);
@@ -20,15 +19,14 @@ fn itWork() {
 
 
 	let server = WebLib4Rust::newHttpServer()
-		.listenPort("9999")
-		.setRouter(router);
+			.bindAddr("0.0.0.0")
+			.listenPort("9999")
+			.setRouter(router);
 
 	server.run();
-
 }
 
 fn validateUser(cxt: Context) {
 	println!("handling context");
-
 }
 

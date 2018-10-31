@@ -20,6 +20,7 @@ use std::net::SocketAddr;
 
 pub fn newHttpServer<'a>() -> HttpServer<'a>{
 	return HttpServer{
+		addr: "",
 		port: "",
 		router: Router{ routes: Vec::new() },
 	};
@@ -29,6 +30,7 @@ pub mod router;
 pub mod asyncio;
 
 pub struct HttpServer<'a>{
+	addr: &'a str,
 	port: &'a str,
 	router: Router<'a>,
 }
@@ -43,6 +45,11 @@ impl <'a>HttpServer<'a>{
 		return self;
 	}
 
+	pub fn bindAddr(mut self, localAddr: &'a str) -> HttpServer<'a>{
+		self.addr = localAddr;
+		return self;
+	}
+
 	pub fn run(mut self){
 		simple_logger::init_with_level(Level::Info).unwrap();
 
@@ -50,10 +57,12 @@ impl <'a>HttpServer<'a>{
 		const SERVER: Token = Token(0);
 		const CLIENT: Token = Token(1);
 
-		let addr = format!("127.0.0.1:{}", &self.port).as_str().parse().unwrap();
+		let addr = format!("{}:{}", &self.addr, &self.port).as_str().parse()
+				.expect(format!("error when parsing the address:{}, port:{}", &self.addr, &self.port).as_str());
 
 		// Setup the server socket
-		let server = TcpListener::bind(&addr).unwrap();
+		let server = TcpListener::bind(&addr)
+				.expect(format!("bind error: {}", &addr).as_str());
 
 		// Create a poll instance
 		let poll = Poll::new().unwrap();

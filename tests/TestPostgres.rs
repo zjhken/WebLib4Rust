@@ -4,6 +4,7 @@
 extern crate postgres;
 
 use postgres::{Connection, TlsMode};
+use std::vec::Vec;
 
 #[test]
 fn pg(){
@@ -18,4 +19,23 @@ fn pg(){
 		println!("row 2:{}", password);
 	}
 
+	let b = Vec::<u32>::new();
+	let c: Vec<u32> = Vec::new();
+	let d = 5_0000u32;
+}
+
+#[test]
+fn testConcurrent(){
+	use std::thread;
+	use std::sync::Arc;
+
+	let var = Arc::new(5);
+	let shareVar = var.clone();
+
+	let newThread = thread::spawn(move || {
+		println!("share value in new thread: {}, addres: {:p}", shareVar, &*shareVar);
+	});
+
+	newThread.join().unwrap();
+	println!("share value in main thread: {}, address: {:p}", var, &*var);
 }
